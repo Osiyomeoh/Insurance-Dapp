@@ -26,12 +26,12 @@ contract CollateralLoanInsurance {
 
     InsuranceLiquidityPool private liquidityPool;
 
-       address public factoryContract; // Address of the InsuranceFactory contract
+       address public factoryContract; 
 
     constructor(address _liquidityPoolAddress, address _owner, address _factoryContract) {
         owner = _owner;
         liquidityPool = InsuranceLiquidityPool(_liquidityPoolAddress);
-        factoryContract = _factoryContract; // Store the address of the InsuranceFactory contract
+        factoryContract = _factoryContract;
     }
 
     modifier onlyInsuredOwner() {
@@ -41,10 +41,10 @@ contract CollateralLoanInsurance {
 
     function isOwnerInsuredByFactory() private view returns (bool) {
         InsuranceFactory factory = InsuranceFactory(factoryContract);
-        uint length = factory.loanInsurancesLength(); // Get the length of the array
+        uint length = factory.loanInsurancesLength(); 
 
         for (uint i = 0; i < length; i++) {
-            address insuranceAddress = factory.loanInsurances(i); // Accessing each element individually
+            address insuranceAddress = factory.loanInsurances(i); 
             if (insuranceAddress == owner) {
                 return true;
             }
@@ -87,8 +87,6 @@ contract CollateralLoanInsurance {
     emit PayoutAmountCalculated(msg.sender, payout);
 
 
-    // Check if the liquidity pool has enough balance to cover the payout
-    // This check assumes the liquidity pool contract has a method to check its Ether balance
     require(address(liquidityPool).balance >= payout, "Liquidity Pool has insufficient funds");
 
     // Withdraw the payout amount to the policyholder

@@ -27,5 +27,5 @@ contract InsuranceLiquidityPool is ERC20 {
     recipient.transfer(amount);  // Transfer Ether to the specified recipient
 }
 
-    // Additional functions...
+   
 }

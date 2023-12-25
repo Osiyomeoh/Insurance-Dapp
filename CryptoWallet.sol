@@ -37,10 +37,10 @@ contract CryptoWalletInsurance {
 
     function isOwnerInsuredByFactory() private view returns (bool) {
     InsuranceFactory factory = InsuranceFactory(factoryContract);
-    uint length = factory.walletInsurancesLength(); // Assuming you have such a function to get the length
+    uint length = factory.walletInsurancesLength();
 
     for (uint i = 0; i < length; i++) {
-        address insuranceAddress = factory.walletInsurances(i); // Accessing each element individually
+        address insuranceAddress = factory.walletInsurances(i); 
         if (insuranceAddress == owner) {
             return true;
         }
@@ -57,14 +57,14 @@ contract CryptoWalletInsurance {
        function applyForInsurance(InsuranceType _insuranceType, uint256 _coverageAmount, uint256 _premium) public payable onlyInsuredOwner {
         require(!policies[msg.sender].active, "Already insured");
 
-        // Ensure the sent Ether matches the specified premium
+        
         require(msg.value == _premium, "Incorrect premium amount");
 
-        // You might want to calculate the expected premium and verify it
+        
         uint256 expectedPremium = calculatePremium(_insuranceType, _coverageAmount);
         require(_premium == expectedPremium, "Premium does not match expected amount");
 
-        // Deposit the premium into the liquidity pool
+       
         liquidityPool.depositTo{value: msg.value}(msg.sender);
 
         // Create and store the new policy
@@ -100,13 +100,11 @@ contract CryptoWalletInsurance {
     function calculatePayout(address _policyHolder) private view returns (uint256) {
         Policy memory policy = policies[_policyHolder];
     
-        // Different payout logic based on the type of insurance
         if (policy.insuranceType == InsuranceType.WalletCoverage) {
-            // For WalletCoverage, let's assume the payout is the full coverage amount
+          
             return policy.coverageAmount;
         } else if (policy.insuranceType == InsuranceType.TransactionProtection) {
-            // For TransactionProtection, the payout could be a percentage of the coverage amount
-            // Example: 75% of the coverage amount
+            
             return policy.coverageAmount * 75 / 100;
         } else {
             // Handle unexpected insurance type
